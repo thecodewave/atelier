@@ -11,3 +11,511 @@ window.smartsupp||(function(d) {
 </script>
 <noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Atelier — Original Works</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --paper: #f5f0e8;
+    --cream: #ede7d5;
+    --gold: #b8975a;
+    --gold-light: #d4b47a;
+    --muted: #7a7060;
+    --card-bg: #fff;
+    --shadow: rgba(13,13,13,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    opacity: 0.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 4rem;
+    background: rgba(245,240,232,0.88);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(184,151,90,0.2);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.7rem;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+
+  .nav-logo span { color: var(--gold); }
+
+  .nav-links {
+    display: flex; gap: 2.4rem; list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none; color: var(--muted);
+    font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase;
+    transition: color 0.25s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 10rem 2rem 6rem;
+    overflow: hidden;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.6rem;
+    opacity: 0; animation: fadeUp 0.9s 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.6rem, 9vw, 8.5rem);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    opacity: 0; animation: fadeUp 1s 0.5s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic; color: var(--gold);
+  }
+
+  .hero-sub {
+    margin-top: 2rem;
+    font-size: 1rem; font-weight: 300; color: var(--muted);
+    max-width: 440px; line-height: 1.75;
+    opacity: 0; animation: fadeUp 1s 0.8s forwards;
+  }
+
+  .hero-cta {
+    margin-top: 3.2rem;
+    display: inline-block;
+    padding: 0.9rem 2.8rem;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 0.76rem; letter-spacing: 0.22em; text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s;
+    opacity: 0; animation: fadeUp 1s 1s forwards;
+  }
+
+  .hero-cta:hover { background: var(--gold); color: var(--paper); }
+
+  .hero-deco {
+    position: absolute;
+    border: 1px solid rgba(184,151,90,0.15);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .hero-deco-1 { width: 600px; height: 600px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+  .hero-deco-2 { width: 900px; height: 900px; top: 50%; left: 50%; transform: translate(-50%,-50%); opacity: 0.6; }
+  .hero-deco-3 { width: 1200px; height: 1200px; top: 50%; left: 50%; transform: translate(-50%,-50%); opacity: 0.3; }
+
+  .scroll-hint {
+    position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+    color: var(--muted); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    opacity: 0; animation: fadeIn 1s 1.8s forwards;
+  }
+
+  .scroll-hint-line {
+    width: 1px; height: 50px; background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s infinite;
+  }
+
+  /* ── GALLERY SECTION ── */
+  .gallery-section {
+    position: relative; z-index: 1;
+    padding: 8rem 4rem 10rem;
+  }
+
+  .section-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    border-top: 1px solid rgba(184,151,90,0.3);
+    padding-top: 2rem;
+    margin-bottom: 5rem;
+  }
+
+  .section-label {
+    font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold);
+  }
+
+  .section-count {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4.5rem; font-weight: 300; color: rgba(13,13,13,0.06);
+    line-height: 1;
+  }
+
+  /* ── MASONRY / GRID ── */
+  .gallery-grid {
+    columns: 3;
+    column-gap: 1.6rem;
+  }
+
+  @media (max-width: 1100px) { .gallery-grid { columns: 2; } }
+  @media (max-width: 640px)  { .gallery-grid { columns: 1; } }
+
+  /* ── ARTWORK CARD ── */
+  .artwork-card {
+    break-inside: avoid;
+    margin-bottom: 1.6rem;
+    background: var(--card-bg);
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    /* scroll animation */
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1),
+                box-shadow 0.35s ease;
+  }
+
+  .artwork-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .artwork-card:hover {
+    box-shadow: 0 24px 60px var(--shadow);
+  }
+
+  .artwork-card:hover .card-overlay { opacity: 1; }
+  .artwork-card:hover .artwork-img { transform: scale(1.04); }
+
+  .artwork-img-wrap {
+    overflow: hidden;
+    display: block;
+    width: 100%;
+  }
+
+  .artwork-img {
+    width: 100%; display: block;
+    transition: transform 0.7s cubic-bezier(.22,1,.36,1);
+    object-fit: cover;
+  }
+
+  .card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(13,13,13,0.72) 0%, transparent 55%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.8rem;
+  }
+
+  .card-overlay-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem; font-weight: 400; color: #fff;
+    line-height: 1.2;
+  }
+
+  .card-overlay-year {
+    font-size: 0.72rem; letter-spacing: 0.18em; color: var(--gold-light);
+    margin-top: 0.4rem; text-transform: uppercase;
+  }
+
+  .card-meta {
+    padding: 1rem 1.2rem 1.3rem;
+    border-top: 1px solid rgba(184,151,90,0.12);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; font-weight: 400; color: var(--ink);
+  }
+
+  .card-year {
+    font-size: 0.7rem; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase;
+  }
+
+  .card-inquire {
+    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold); cursor: pointer;
+    background: none; border: none; padding: 0;
+    font-family: 'Barlow', sans-serif;
+    transition: opacity 0.2s;
+  }
+
+  .card-inquire:hover { opacity: 0.7; }
+
+  /* ── ABOUT STRIP ── */
+  .about-strip {
+    position: relative; z-index: 1;
+    background: var(--ink);
+    padding: 7rem 4rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
+    align-items: center;
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+
+  .about-strip.visible { opacity: 1; transform: translateY(0); }
+
+  .about-eyebrow {
+    font-size: 0.7rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--gold);
+    margin-bottom: 1.4rem;
+  }
+
+  .about-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.4rem); font-weight: 300;
+    color: var(--paper); line-height: 1.15;
+  }
+
+  .about-title em { font-style: italic; color: var(--gold); }
+
+  .about-text {
+    font-size: 0.95rem; line-height: 1.9; color: rgba(245,240,232,0.6);
+    margin-top: 2rem;
+  }
+
+  .about-stat {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem; font-weight: 300; color: var(--gold);
+    line-height: 1; display: block;
+  }
+
+  .stat-label {
+    font-size: 0.75rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: rgba(245,240,232,0.45); margin-top: 0.5rem;
+  }
+
+  .stats-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 1;
+    padding: 4rem;
+    border-top: 1px solid rgba(184,151,90,0.2);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink);
+  }
+
+  .footer-logo span { color: var(--gold); }
+
+  .footer-note {
+    font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em;
+  }
+
+  /* ── LIGHTBOX ── */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(13,13,13,0.94);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.35s;
+    padding: 2rem;
+  }
+
+  .lightbox.open { opacity: 1; pointer-events: all; }
+
+  .lightbox-inner {
+    position: relative; max-width: 800px; width: 100%;
+    transform: scale(0.9);
+    transition: transform 0.35s cubic-bezier(.22,1,.36,1);
+  }
+
+  .lightbox.open .lightbox-inner { transform: scale(1); }
+
+  .lightbox-img {
+    width: 100%; display: block;
+    max-height: 75vh; object-fit: contain;
+  }
+
+  .lightbox-caption {
+    padding: 1.4rem 0 0;
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+
+  .lightbox-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; color: var(--paper); font-weight: 300;
+  }
+
+  .lightbox-year {
+    font-size: 0.72rem; letter-spacing: 0.18em; color: var(--gold); text-transform: uppercase;
+  }
+
+  .lightbox-close {
+    position: absolute; top: -2.5rem; right: 0;
+    background: none; border: none; color: rgba(245,240,232,0.6);
+    font-size: 1.5rem; cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .lightbox-close:hover { color: var(--paper); }
+
+  .lightbox-inquire-btn {
+    display: inline-block;
+    margin-top: 1.2rem;
+    padding: 0.75rem 2.2rem;
+    border: 1px solid var(--gold);
+    color: var(--gold); font-size: 0.74rem; letter-spacing: 0.2em; text-transform: uppercase;
+    text-decoration: none; background: none; cursor: pointer;
+    font-family: 'Barlow', sans-serif;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .lightbox-inquire-btn:hover { background: var(--gold); color: var(--ink); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 1; transform: scaleY(1); }
+    50%       { opacity: 0.4; transform: scaleY(0.5); }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .gallery-section { padding: 5rem 1.5rem 7rem; }
+    .about-strip { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 1.5rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2.5rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Ate<span>l</span>ier</div>
+  <ul class="nav-links">
+    <li><a href="#gallery">Collection</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Inquire</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-deco hero-deco-1"></div>
+  <div class="hero-deco hero-deco-2"></div>
+  <div class="hero-deco hero-deco-3"></div>
+  <p class="hero-eyebrow">Original Artworks &nbsp;·&nbsp; Curated Collection</p>
+  <h1 class="hero-title">Where <em>Art</em><br>Finds Its Home</h1>
+  <p class="hero-sub">A private collection of original works spanning three decades of bold expression, cultural depth, and visual dialogue.</p>
+  <a href="#gallery" class="hero-cta">View the Collection</a>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-hint-line"></div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section" id="gallery">
+  <div class="section-header">
+    <span class="section-label">The Collection</span>
+    <span class="section-count">32</span>
+  </div>
+  <div class="gallery-grid" id="galleryGrid">
+    <!-- cards injected by JS -->
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-strip" id="about">
+  <div>
+    <p class="about-eyebrow">Our Story</p>
+    <h2 class="about-title">Art that carries <em>history</em> in every brushstroke</h2>
+    <p class="about-text">We represent a curated roster of visionary artists whose work spans oil on canvas, mixed media, and sculptural forms. Each piece is sourced directly, authenticated, and sold with provenance documentation. To acquire a work, simply reach out — our team will guide you through the process with care and discretion.</p>
+  </div>
+  <div class="stats-grid">
+    <div class="about-stat"><span class="stat-number">32</span><span class="stat-label">Originals</span></div>
+    <div class="about-stat"><span class="stat-number">36</span><span class="stat-label">Years</span></div>
+    <div class="about-stat"><span class="stat-number">12</span><span class="stat-label">Artists</span></div>
+    <div class="about-stat"><span class="stat-number">3</span><span class="stat-label">Continents</span></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-logo">Ate<span>l</span>ier</div>
+  <p class="footer-note">To purchase, use the chat button below &nbsp;·&nbsp; All works are original</p>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" id="lightboxClose">&#x2715;</button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="" />
+    <div class="lightbox-caption">
+      <div>
+        <div class="lightbox-title" id="lightboxTitle"></div>
+        <div class="lightbox-year" id="lightboxYear"></div>
+      </div>
+    </div>
+    <button class="lightbox-inquire-btn" id="lightboxInquire">Inquire via Chat</button>
+  </div>
+</div>
+
+<!-- SMARTSUPP -->
+<script>
+  var _smartsupp = _smartsupp || {};
+  _smartsupp.key = 'YOUR_SMARTSUPP_KEY';
+  window.smartsupp||(function(d) {
+    var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+    s=d.createElement('script');c=d.getElementsByTagName('script')[0];
+    s.type='text/javascript';s.charset='utf-8';s.async=!0;
+    s.src='https://www.smartsupp.com/loader.js?';c.parentNode.insertBefore(s,c);
+  })(document);
+</script>
+
+<script>
+const ARTWORKS = [
+  { title: "Echoes of the Harmattan", year: 1994, src: "data:image/jpeg;base64,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
